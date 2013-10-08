@@ -8,6 +8,9 @@ set ignorecase
 " Incremental search
 set incsearch
 
+" numbered lines (useful for moving)
+set relativenumber
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
