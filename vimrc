@@ -11,6 +11,8 @@ set incsearch
 
 " numbered lines (useful for moving)
 set relativenumber
+" only exact numbering on your current line, golden
+set nu
 
 set mouse-=a
 
