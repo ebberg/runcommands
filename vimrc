@@ -1,5 +1,6 @@
 
 inoremap kj <Esc>
+inoremap jk <Esc>
 nnoremap ; :
 
 " Ignore case when searching
@@ -11,6 +12,7 @@ set incsearch
 " numbered lines (useful for moving)
 set relativenumber
 
+set mouse-=a
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -115,9 +117,9 @@ set expandtab
 " Be smart when using tabs ;)
 set smarttab
 
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+" 1 tab == 2 spaces
+set shiftwidth=2
+set tabstop=2
 
 set wrap "Wrap lines
 
@@ -151,10 +153,13 @@ map <leader>bd :Bclose<cr>
 map <leader>ba :1,1000 bd!<cr>
 
 " Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
+"map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
+
+map <C-i> :tabnext<cr>
+map <S-Tab> :tabprev<cr>
 
 
 " Opens a new tab with the current buffer's path
