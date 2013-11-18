@@ -1,4 +1,6 @@
 
+execute pathogen#infect()
+
 inoremap kj <Esc>
 inoremap jk <Esc>
 nnoremap ; :
