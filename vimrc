@@ -139,6 +139,10 @@ map k gk
 map <space> /
 map <c-space> ?
 
+" Create markdown headings for a line
+map <leader>2 yypVr-
+map <leader>1 yypVr=
+
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
@@ -148,7 +152,6 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
-
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>
