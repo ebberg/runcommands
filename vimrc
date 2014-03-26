@@ -204,3 +204,6 @@ set laststatus=2
 let vimclojure#WantNailgun = 1
 let vimclojure#NaigunClient = "~/bin/ng"
 
+" expand pex and egg in vim omfg yes
+au BufReadCmd *.pex call zip#Browse(expand("<amatch>"))
+au BufReadCmd *.egg call zip#Browse(expand("<amatch>"))
