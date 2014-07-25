@@ -1,19 +1,19 @@
 [user]
-        name = Eric Berg
-        email = eric@bergd.net
+  name = Eric Berg
+  email = eric@bergd.net
 
 [alias] 
-    st = status
-    ci = commit
-    co = checkout
-    w = whatchanged
-    br = branch
-    sb = submodule
-    lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
-    brdiff = "log --left-right --graph --cherry-pick --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+  st = status
+   ci = commit
+   co = checkout
+   w = whatchanged
+   br = branch
+   sb = submodule
+   lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
+   brdiff = "log --left-right --graph --cherry-pick --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
 [color] 
-    ui = auto
+   ui = auto
 
 [branch]
 	autosetuprebase = always
@@ -24,10 +24,14 @@
 [core]
 	ignorecase = false
 	excludesfile = ~/.cvsignore
+  editor = vim
 
 [diff]
 	tool = vimdiff
+
 [push]
 	default = current
+
 [grep]
 	lineNumber = true
+

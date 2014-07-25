@@ -1,5 +1,10 @@
 " Originally Written by Jake Kaufman with much help from Dannel Jurado and
-" Jason Zaman
+" Jason Zaman and then bastardized and turned into a pulp by Eric Berg
+
+" The only three lines that actually matter
+inoremap kj <Esc>
+inoremap jk <Esc>
+nnoremap ; :
 
 " Get rid of that stupid intro
 set shortmess+=I
