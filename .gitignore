@@ -1,6 +1,12 @@
-[._]*.s[a-w][a-z]
-[._]s[a-w][a-z]
-*.un~
-Session.vim
+*.swp
 .netrwhist
-*~
+*.log
+*.json
+*.oauth
+*.data
+vim/tmp/
+vim/cache/
+tags
+git-completion.bash
+git-prompt.sh
+git_completion_version

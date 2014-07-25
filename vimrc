@@ -1,209 +1,373 @@
+" Originally Written by Jake Kaufman with much help from Dannel Jurado and
+" Jason Zaman
 
-execute pathogen#infect()
+" Get rid of that stupid intro
+set shortmess+=I
 
-inoremap kj <Esc>
-inoremap jk <Esc>
-nnoremap ; :
+" loads our bundle directory
+filetype off
+" I have pathogen as a bundle so it needs to be added
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+call pathogen#infect('bundle/{}')
+call pathogen#helptags()
 
-" Ignore case when searching
-set ignorecase
+""""""""""""""""""""""""""""""""""""""""""""""""
+" History
+""""""""""""""""""""""""""""""""""""""""""""""""
+set nocompatible
+set history=1000
 
-" Incremental search
-set incsearch
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Interface
+""""""""""""""""""""""""""""""""""""""""""""""""
+set noerrorbells
+set visualbell
+set t_vb=""
 
-" numbered lines (useful for moving)
+set switchbuf=useopen,split
+
+" Buffer handling
+set hidden
+" adds a ruler to the statusbar
+set ruler
+" sets the title of the xterm or what not to the filename
+set title
+" This allows better matching as it doesn't autochoose
+set wildmenu
+" shell style completion
+set wildmode=list:longest,full
+" Shows the current mode
+set showmode
+" Shows commands that match your incomplete typing
+set showcmd
+" Number our lines
 set relativenumber
-" only exact numbering on your current line, golden
-set nu
+" always show the statusline
+set laststatus=2
+" redraw only when we need to.
+set lazyredraw
 
-set mouse-=a
+set statusline=%F%m%r%h%w\ %{fugitive#statusline()}%=%{PasteMode()}[%l,%v][%p%%]
+
+" Briefly jump the cursor to show the matching bracket
+set showmatch
+set matchtime=3
+" Show the current working line
+set cursorline
+
+" Show colorcolumn on insert
+autocmd InsertEnter * let &l:colorcolumn=&textwidth+1
+autocmd InsertLeave * setlocal colorcolumn=0
+
+" see if any files have changed when switching buffers
+autocmd WinEnter * checktime %
+" if I don't touch anything for 30 seconds, check all buffers
+autocmd CursorHold * checktime
+set updatetime=30000
+
+"set clipboard=unnamed,exclude:screen.*\\\\|xterm.*
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Searching
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Use normal regex's
+nnoremap / /\v
+vnoremap / /\v
+" Assume case insensitive
+set ignorecase
+" Assume case sensitive in the case of uppercase chars
+set smartcase
+" Best match so far as you type
+set incsearch
+" Highlight the last search done
+set hlsearch
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Encoding
+""""""""""""""""""""""""""""""""""""""""""""""""
+set encoding=utf-8
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Indenting/Spacing
+""""""""""""""""""""""""""""""""""""""""""""""""
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set smarttab
+set expandtab
+set smartindent
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Line Wrapping
+""""""""""""""""""""""""""""""""""""""""""""""""
+set wrap
+set textwidth=79
+set formatoptions=croql1n
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Sets how many lines of history VIM has to remember
-set history=700
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Temp file storage
+""""""""""""""""""""""""""""""""""""""""""""""""
+if has("win32")
+    set backupdir=$TEMP
+    set directory=$TEMP
+    let g:yankring_history_dir=$TEMP
 
-" Enable filetype plugins
+    if version >= 703
+        set undofile
+        set undodir=$TEMP
+    endif
+else
+    " enable backup files
+    set backup
+    silent execute '!mkdir -p $HOME/.vim/tmp/backup'
+    set backupdir=~/.vim/tmp/backup/
+
+    " swap files
+    silent execute '!mkdir -p $HOME/.vim/tmp/swap'
+    set directory=~/.vim/tmp/swap/
+
+    " view files
+    silent execute '!mkdir -p $HOME/.vim/tmp/views'
+    set viewdir=~/.vim/tmp/views/
+
+    " yankring
+    silent execute '!mkdir -p $HOME/.vim/tmp/yankring'
+    let g:yankring_history_dir = '~/.vim/tmp/yankring'
+
+    if version >= 703
+        set undofile
+        silent execute '!mkdir -p $HOME/.vim/tmp/undo'
+        set undodir=~/.vim/tmp/undo/ " undofiles
+    endif
+endif
+" remember stuff when we close
+" specifically marks, registers, searches and buffers
+set viminfo='20,<50,s10,h,%
+
+" Fix backspaces on broken systems
+set backspace=indent,eol,start
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Leader Hotkeys
+""""""""""""""""""""""""""""""""""""""""""""""""
+" sets our leader from \ to ,
+let mapleader = " "
+
+" set up to show spaces
+set listchars=tab:>-,trail:_,eol:$
+nmap <silent> <leader>s :set nolist!<CR>
+
+" sets ,n to silence search
+nmap <silent> <leader>q :silent :nohlsearch<CR>
+
+" add a toggle spelling key
+nmap <silent> <leader>sp :set spell!<CR>
+
+nmap <silent> <leader>p :set paste!<CR>
+
+nmap <silent> <leader>n :set relativenumber!<CR> :GitGutterToggle<CR>
+
+nmap <silent> <leader>r :RainbowToggle<CR>
+
+nmap <silent> <leader>c :%s/\s\+$//<CR>
+
+nmap <silent> <leader>ct :TlistToggle<CR>
+
+nmap <silent> <leader>f :NERDTreeToggle<CR>
+nmap <silent> <leader>F :NERDTreeFind<CR>
+
+" fugitive keys
+nmap <silent> <leader>gs :Gstatus<CR>
+nmap <silent> <leader>W :Gw<CR>
+nmap <silent> <leader>gd :Gdiff<CR>
+nmap <leader>g :Git
+nmap <leader>gc :Git checkout %
+
+nmap <silent> <leader>pe :!p4 edit %<CR>
+
+nnoremap <silent> <leader>y :YRShow<CR>
+
+nnoremap <silent> <leader>u :GundoToggle<CR>
+
+nnoremap <silent> <leader>m :w<CR> :make<CR> :cw<CR>
+
+nnoremap <silent> <leader>ll :HighlightLongLines<CR>
+
+inoremap {{ {<CR>}<Esc>ko
+
+" spleling
+"setlocal spell spelllang=en
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Mappings
+""""""""""""""""""""""""""""""""""""""""""""""""
+" all the cool kids are doing it
+noremap <Up> <nop>
+noremap <Down> <nop>
+noremap <Left> <nop>
+noremap <Right> <nop>
+" also kill home|end|pup|pdown
+noremap <Home> <nop>
+noremap <kHome> <nop>
+noremap <End> <nop>
+noremap <kEnd> <nop>
+noremap <PageUp> <nop>
+noremap <PageDown> <nop>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Syntax highlighting
+""""""""""""""""""""""""""""""""""""""""""""""""
+syntax on
+filetype on
 filetype plugin on
 filetype indent on
 
-" Set to auto read when a file is changed from the outside
-set autoread
+" Sets the program to use for grep.
+set grepprg=grep\ -nH\ $*
 
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
+" * FileType formatting things
 
+" for C-like programming, have automatic indentation:
+autocmd FileType c,cpp,slang set cindent
 
+" for actual C (not C++) programming where comments have explicit end
+" characters, if starting a new line in the middle of a comment automatically
+" insert the comment leader characters:
+autocmd FileType c set formatoptions+=ro
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" for CSS, also have things in braces indented:
+autocmd FileType css set smartindent
 
+" for HTML, generally format text, but if a long line has been created leave it
+" alone when editing:
+autocmd FileType html set formatoptions+=tl
 
-"Always show current position
-set ruler
+" Makefiles don't want tabs -> spaces
+autocmd FileType make set noexpandtab shiftwidth=8
 
-" Height of the command bar
-set cmdheight=2
+" Json is just javascript
+autocmd BufNewFile,BufRead *.json set ft=javascript
 
+" extends matching to if/else etc
+runtime macros/matchit.vim
 
-" Ignore case when searching
-set ignorecase
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Folding
+""""""""""""""""""""""""""""""""""""""""""""""""
+set foldmethod=syntax
+set foldlevel=99
 
-" When searching try to be smart about cases 
-set smartcase
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Tlist stuff
+""""""""""""""""""""""""""""""""""""""""""""""""
+let Tlist_WinWidth = 40
 
-" Highlight search results
-set nohlsearch
+""""""""""""""""""""""""""""""""""""""""""""""""
+" VIM Tip: http://vim.wikia.com/wiki/Search_for_visually_selected_text
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Search for selected text, forwards or backwards.
+vnoremap <silent> * :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy/<C-R><C-R>=substitute(
+  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
+vnoremap <silent> # :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy?<C-R><C-R>=substitute(
+  \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
 
-" Makes search act like search in modern browsers
-set incsearch
+""""""""""""""""""""""""""""""""""""""""""""""""
+" comment cleanups
+""""""""""""""""""""""""""""""""""""""""""""""""
+" get rid of the default style of C comments, and define a style with two stars
+" at the start of `middle' rows which (looks nicer and) avoids asterisks used
+" for bullet lists being treated like C comments; then define a bullet list
+" style for single stars (like already is for hyphens):
+set comments-=s1:/*,mb:*,ex:*/
+set comments+=s:/*,mb:\ *,ex:*/
+set comments+=fb:\ *
+" treat lines starting with a quote mark as comments (for 'Vim' files)
+set comments+=b:\"
 
-" Don't redraw while executing macros (good performance config)
-set lazyredraw
-
-" Show matching brackets when text indicator is over them
-set showmatch
-
-" How many tenths of a second to blink when matching brackets
-set mat=2
-
-
-" No annoying sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Enable syntax highlighting
-syntax enable
-
-colorscheme elflord
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Dark background
+""""""""""""""""""""""""""""""""""""""""""""""""
+" I always work on dark terminals
 set background=dark
 
-" Set extra options when running in GUI mode
-if has("gui_running")
-    set guioptions-=T
-    set guioptions+=e
-    set t_Co=256
-    set guitablabel=%M\ %t
-endif
+" Make the completion menus readable
+highlight Pmenu ctermfg=0 ctermbg=3
+highlight PmenuSel ctermfg=0 ctermbg=7
 
-" Set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Helper functions
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Highlight lines longer than 80 characters as dark-red, lines longer than 90
+" characters as a brighter red.
+function! HighlightLongLines()
+    if exists('b:highlight_long_lines') && b:highlight_long_lines == 1
+        let b:highlight_long_lines = 0
+        highlight OverLength NONE
+        highlight SortaOverLength NONE
+    else
+        let b:highlight_long_lines = 1
+        highlight OverLength ctermbg=124 guibg=#990000
+        highlight SortaOverLength ctermbg=52 guibg=#330000
+        match SortaOverLength /\m\%>80v.\%<92v/
+        2match OverLength /\m\%>90v.\%<120v/
+    endif
+endfunction
+command! HighlightLongLines call HighlightLongLines()
 
-" Use Unix as the standard file type
-set ffs=unix,dos,mac
+" simplify flipping between relative and absolute numbering
+function! ToggleRelative()
+    if (&relativenumber)
+      set number
+    else
+      set relativenumber
+    endif
+endfunction
+command! ToggleRelative call ToggleRelative()
 
+" Toggle rainbow parens w/ the braces we want
+function! RainbowToggle()
+  RainbowParenthesesToggle
+  RainbowParenthesesLoadBraces
+endfunction
+command! RainbowToggle call RainbowToggle()
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn backup off, since most stuff is in SVN, git et.c anyway...
-set nobackup
-set nowb
-set noswapfile
+function! PasteMode()
+    if &paste
+        return '(paste)'
+    else
+        return ''
+    endif
+endfunction
 
+""""""""""""""""""""""""""""""""""""""""""""""""
+" CommandT
+""""""""""""""""""""""""""""""""""""""""""""""""
+let g:CommandTMaxFiles = 2000000
+let g:CommandTMaxDepth = 40
+let g:CommandTMaxCachedDirectories = 0
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use spaces instead of tabs
-set expandtab
+let g:CommandTBackspaceMap=[ '<C-h>', '<BS>' ]
+let g:CommandTCursorLeftMap='<Left>'
 
-" Be smart when using tabs ;)
-set smarttab
+""""""""""""""""""""""""""""""""""""""""""""""""
+" syntastic
+""""""""""""""""""""""""""""""""""""""""""""""""
+let g:syntastic_enable_signs = 1
+let g:syntastic_auto_loc_list = 1
 
-" 1 tab == 2 spaces
-set shiftwidth=2
-set tabstop=2
+let g:syntastic_mode_map = { 'mode': 'passive',
+                           \ 'active_filetypes': [],
+                           \ 'passive_filetypes': [] }
 
-set wrap "Wrap lines
+set wildignore+=*.so,*.swp,*.zip,*.jar,*.pyc,*.class,*.bak,venv/*
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs, windows and buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Treat long lines as break lines (useful when moving around in them)
-map j gj
-map k gk
-
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
-
-" Create markdown headings for a line
-map <leader>2 yypVr-
-map <leader>1 yypVr=
-
-
-" Disable highlight when <leader><cr> is pressed
-map <silent> <leader><cr> :noh<cr>
-
-" Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
-" Close the current buffer
-map <leader>bd :Bclose<cr>
-
-" Close all the buffers
-map <leader>ba :1,1000 bd!<cr>
-
-" Useful mappings for managing tabs
-"map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
-
-map <C-i> :tabnext<cr>
-map <S-Tab> :tabprev<cr>
-
-
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-
-" Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
-
-" Specify the behavior when switching between buffers 
-try
-  set switchbuf=useopen,usetab,newtab
-  set stal=2
-catch
-endtry
-
-" Return to last edit position when opening files (You want this!)
-autocmd BufReadPost *
-     \ if line("'\"") > 0 && line("'\"") <= line("$") |
-     \   exe "normal! g`\"" |
-     \ endif
-" Remember info about open buffers on close
-set viminfo^=%
-
-
-""""""""""""""""""""""""""""""
-" => Status line
-""""""""""""""""""""""""""""""
-" Always show the status line
-set laststatus=2
-
-""""""""""""""""""""""""""""""
-" => Plugin Config
-""""""""""""""""""""""""""""""
-let vimclojure#WantNailgun = 1
-let vimclojure#NaigunClient = "~/bin/ng"
-
-" expand pex and egg in vim omfg yes
-au BufReadCmd *.pex call zip#Browse(expand("<amatch>"))
-au BufReadCmd *.egg call zip#Browse(expand("<amatch>"))
+colorscheme ir_black
