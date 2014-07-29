@@ -102,6 +102,11 @@ if [[ `type -t brew` == "file" ]] ; then
     export PATH="/usr/local/bin:$PATH"
 fi
 
+# pick up homebin if one has wont to homebin
+if [[ -d "$HOME/bin/" ]] ; then
+  export PATH="$PATH:$HOME/bin"
+fi
+
 os=`uname -s`
 
 # exports
