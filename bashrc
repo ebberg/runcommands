@@ -134,6 +134,8 @@ alias more="less" # never use more, use less instead
 alias unhist='unset HISTFILE'
 alias synergyc="killall synergyc; synergyc"
 alias synergys="killall synergys; synergys"
+alias tl="tmux list-sessions"
+alias tm="tmux attach"
 
 # colorful commands
 alias grep='grep --colour=auto'
