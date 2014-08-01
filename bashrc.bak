@@ -1,0 +1,62 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific aliases and functions
+
+source ~/foursquare.web/scripts/autocomplete-pants.sh
+
+# Get them paths
+
+export PYTHONSTARTUP=~/.pythonrc
+export AWS_CREDENTIAL_FILE=~/.awscred
+
+kill_user() {
+    for pid in `ps -ef | grep $tfs_spds | awk '{print $2}'`; do 
+        kill -9 $pid;
+    done
+}
+
+# Predictable SSH authentication socket location.
+SOCK="/tmp/ssh-agent-$USER-screen"
+if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
+then
+    rm -f /tmp/ssh-agent-$USER-screen
+    ln -sf $SSH_AUTH_SOCK $SOCK
+    export SSH_AUTH_SOCK=$SOCK
+fi
+
+alias tm="tmux attach"
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export TZ=UTC
+alias fdb_mdb="(cd ~/src/foursquare.web/ && 
+              ./pants binary src/python/foursquare/fdb:fdb_proxy &&
+              ./pants binary src/python/foursquare/fdb:mdb_collector)"
+alias mongosnap_status="(cd ~/src/foursquare.web/ &&
+  ./pants binary src/python/foursquare/backup:mongosnap_status &&
+  ./dist/mongosnap_status.pex)"
+alias mongo_test='mkdir /tmp/mongo-testdb; mongod --dbpath /tmp/mongo-testdb --maxConns 1500 --port 27225'
+
+
+[ -s "/home/berg/.scm_breeze/scm_breeze.sh" ] && source "/home/berg/.scm_breeze/scm_breeze.sh"
+#source ~/.git-completion.bash
+
+#source ~/.git-prompt.sh
+#export PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+#PS1='\[\e[0;31m\]\u\[\e[m\] \[\e[1;34m\]\w\[\e[m\] \[\e[0;31m\]\$ \[\e[m\]\[\e[0;32m\]'
+#export PS1='\[\e[0;32m\]\u\[\e[m\]@\h \[\e[1;34m\]\w\[\e[m\] \[\e[1;32m\]$(__git_ps1 " (%s)")\$\[\e[m\] \[\e[1;37m\]'
+
+export WORKON_HOME=~/Envs
+mkdir -p $WORKON_HOME
+source `which virtualenvwrapper.sh`
+alias asg="ssh -A asgard"
+alias gpull="git pull --rebase"
+alias gpush="git fpush origin master"
+alias gpretty="git log -1 --pretty=%h"
+
+
