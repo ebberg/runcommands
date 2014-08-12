@@ -71,13 +71,6 @@ if [[ `type -t npm` && -d `npm bin` ]] ; then
     PATH=$PATH:`npm bin -g 2>/dev/null`
 fi
 
-# load rvm and remind me to blow it up
-if [[ -s "$HOME/.rvm/scripts/rvm" ]] ; then
-    source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-    echo -ne "\033[1mPLEASE TYPE rvm implode!\n\033[0m"
-fi
-
 # try to pick up ruby
 if [[ -s "/usr/local/share/chruby/chruby.sh" ]] ; then
   . /usr/local/share/chruby/chruby.sh
@@ -307,5 +300,8 @@ then
   ln -sf "$SSH_AUTH_SOCK" "$ssh_sock_symlink"
   export SSH_AUTH_SOCK=$ssh_sock_symlink
 fi
+
+# use rbenv
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 unset os
