@@ -375,4 +375,4 @@ let g:syntastic_mode_map = { 'mode': 'passive',
 
 set wildignore+=*.so,*.swp,*.zip,*.jar,*.pyc,*.class,*.bak,venv/*
 
-colorscheme ir_black
+colorscheme default

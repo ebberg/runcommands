@@ -246,37 +246,15 @@ ${git_bit}${direction}${bldred}]${txtrst} "
     printf "%s" "$git_bit"
 }
 
-# if we have 256 colors use them in prompt
-if [[ $TERM =~ '256color' ]]; then
-    HOST_COLOR="\[\e[38;5;$((16 + $(cksum <<<$HOSTNAME | cut -f1 -d" ") % 216))m\]"
-else
-    HOST_COLOR="\[\e[0;$((31 + $(cksum <<<$HOSTNAME | cut -f1 -d" ") % 6))m\]"
-fi
-
-# shorten and colorize hostname for prompt
 host=`hostname -s`
-if [[ ${host} == "sixteen" ]]; then
-  HOST_COLOR="${HOST_COLOR}16"
-elif [[ ${host} =~ 'dev-' ]]; then
-  HOST_COLOR="${HOST_COLOR}${host#dev-}"
-else
-  HOST_COLOR="${HOST_COLOR}${host:0:3}"
-fi
+HOST_COLOR="${txtblk}${host:0:3}"
 unset host
 
-if [[ $USER = 'jkaufman' || $USER = 'jdkaufma' ]]; then
-    USER_COLOR="${txtgrn}jk"
-elif [[ $USER = 'jakeman' || $USER = 'jacobdeamkaufman' ]]; then
-    USER_COLOR="${txtcyn}jkmn"
-elif [[ $EUID -eq 0 ]]; then
-    USER_COLOR="${txtred}r"
-else
-    USER_COLOR="${undpur}${USER}"
-fi
+USER_COLOR="${undblk}${USER}"
 
 function set_prompt {
     git="$(parse_git)"
-    PS1="${bldblk}\D{%H:%M:%S} ${USER_COLOR}${txtwht}@${HOST_COLOR}${txtgrn} \w $git${bldblu}\$${txtrst} "
+    PS1="${bldblk}\D{%H:%M:%S} ${USER_COLOR}${txtblk}@${HOST_COLOR}${txtgrn} \w $git${bldblu}\$${txtrst} "
     export PS1
 }
 
