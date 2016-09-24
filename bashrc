@@ -282,4 +282,7 @@ fi
 # use rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
+# golang
+export GOPATH=$HOME/go
+
 unset os

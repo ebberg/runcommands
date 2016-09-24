@@ -19,3 +19,10 @@ ln -sf code/runcommands/gitconfig .gitconfig
 ln -sf code/runcommands/bash_profile .bash_profile
 ln -sf code/runcommands/bashrc .bashrc
 ```
+
+to add another vim module
+-------------------------
+
+- don't just git clone!
+- add to .gitmodules, commit, and rerun `source submod.sh`
+- you got this
