@@ -24,5 +24,5 @@ to add another vim module
 -------------------------
 
 - don't just git clone!
-- add to .gitmodules, commit, and rerun `source submod.sh`
+- cd to vim/bundles, `git submodule add whatever`, commit
 - you got this
